@@ -1,10 +1,10 @@
-# 📋 Inventory & Order Management System
+# Inventory & Order Management System
 
 A production-ready full-stack Inventory & Order Management System built with **React**, **FastAPI**, and **PostgreSQL**, fully containerized with Docker.
 
 ---
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 | Layer        | Technology                    |
 |--------------|-------------------------------|
@@ -17,47 +17,78 @@ A production-ready full-stack Inventory & Order Management System built with **R
 
 ---
 
-## 📂 Project Structure
+## Live Deployment
+Service	      | URL
+Frontend	      | https://inventory-and-order-management-syst-beta.vercel.app
+Backend API	   | https://inventory-and-order-management-system-production.up.railway.app
+API Docs	      | https://inventory-and-order-management-system-production.up.railway.app/docs
+Health Check   | https://inventory-and-order-management-system-production.up.railway.app/health
+Docker Image	| https://hub.docker.com/r/shiveshm46radha/inventory-backend
+
+---
+
+## Project Structure
 
 ```
-.
+inventory-order-management/
+│
 ├── backend/
 │   ├── app/
-│   │   ├── main.py          # FastAPI app, CORS, routers
-│   │   ├── database.py      # SQLAlchemy engine & session
-│   │   ├── models.py        # ORM models
-│   │   ├── schemas.py       # Pydantic v2 schemas
+│   │   ├── main.py            # FastAPI app entry point, CORS setup, router registration
+│   │   ├── database.py        # SQLAlchemy engine, session, and DB connection logic
+│   │   ├── models.py          # ORM models (Product, Customer, Order)
+│   │   ├── schemas.py         # Pydantic schemas for request/response validation
 │   │   └── routers/
-│   │       ├── products.py
-│   │       ├── customers.py
-│   │       └── orders.py
-│   ├── requirements.txt
-│   ├── Dockerfile
-│   └── .dockerignore
+│   │       ├── products.py    # Product CRUD APIs
+│   │       ├── customers.py   # Customer CRUD APIs
+│   │       └── orders.py      # Order APIs with business logic (stock handling)
+│   │
+│   ├── requirements.txt       # Python dependencies (FastAPI, SQLAlchemy, etc.)
+│   ├── Dockerfile             # Backend container setup (Python slim image)
+│   └── .dockerignore          # Ignore unnecessary files during Docker build
+│
 ├── frontend/
 │   ├── src/
-│   │   ├── App.js
-│   │   ├── index.css        # Design system
-│   │   ├── components/      # Sidebar, Topbar, UI
-│   │   ├── pages/           # Dashboard, Products, Customers, Orders
-│   │   └── services/api.jsx  # Axios API layer
-│   ├── nginx.conf
-│   ├── Dockerfile
-│   └── .dockerignore
-├── docker-compose.yml
-├── .env.example
-├── schema.sql               # Reference PostgreSQL schema
-└── README.md
+│   │   ├── index.jsx          # React entry point (ReactDOM root)
+│   │   ├── App.jsx            # Main app component with routing & layout
+│   │   ├── index.css          # Global styles and design system
+│   │   │
+│   │   ├── components/        # Reusable UI components
+│   │   │   ├── Sidebar.jsx    # Navigation sidebar
+│   │   │   ├── Topbar.jsx     # Header / top navigation
+│   │   │   └── UI.jsx         # Shared UI elements (badges, loaders, etc.)
+│   │   │
+│   │   ├── pages/             # Main application pages
+│   │   │   ├── Dashboard.jsx  # Overview stats and low stock display
+│   │   │   ├── Products.jsx   # Product management UI
+│   │   │   ├── Customers.jsx  # Customer management UI
+│   │   │   └── Orders.jsx     # Order creation and listing UI
+│   │   │
+│   │   └── services/
+│   │       └── api.jsx        # Axios API layer to communicate with backend
+│   │
+│   ├── public/
+│   │   └── index.html         # HTML template
+│   │
+│   ├── nginx.conf             # Nginx config for serving React build
+│   ├── Dockerfile             # Multi-stage frontend build (Node → Nginx)
+│   └── .dockerignore          # Ignore unnecessary files during Docker build
+│
+├── docker-compose.yml         # Orchestrates backend, frontend, and PostgreSQL
+├── .env.example               # Environment variables template (safe for sharing)
+├── schema.sql                 # Reference PostgreSQL schema (tables structure)
+└── README.md                  # Project documentation and setup guide
+
 ```
 
 ---
 
-## 🚀 Quick Start (Docker)
+## Quick Start (Docker)
 
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/shiveshmishra46/Inventory-and-Order-Management-System.git
 cd "Inventory and Order Management System"
 ```
 
@@ -127,7 +158,7 @@ The system will automatically:
 
 ---
 
-## ⚙️ Business Logic
+## Business Logic
 
 - **SKU must be unique** — 409 Conflict returned otherwise
 - **Email must be unique** — 409 Conflict returned otherwise
@@ -153,68 +184,6 @@ docker build -t <your-dockerhub-username>/inventory-frontend:latest ./frontend
 docker push <your-dockerhub-username>/inventory-backend:latest
 docker push <your-dockerhub-username>/inventory-frontend:latest
 ```
-
----
-
-## ☁️ Deployment Guide
-
-### Backend → Railway
-
-1. Go to [railway.app](https://railway.app) and create a new project
-2. Add a **PostgreSQL** service from the Railway marketplace
-3. Add a new service → "Deploy from GitHub repo" → select the repo
-4. Set **Root Directory** to `backend`
-5. Set environment variables in Railway dashboard:
-   ```
-   DATABASE_URL=<Railway provided PostgreSQL URL>
-   FRONTEND_URL=https://<your-vercel-app>.vercel.app
-   PORT=8000
-   ```
-6. Railway auto-detects the Dockerfile and deploys
-7. Note your Railway backend URL (e.g., `https://inventory-backend.up.railway.app`)
-
-### Frontend → Vercel
-
-1. Go to [vercel.com](https://vercel.com) and import your GitHub repository
-2. Set **Root Directory** to `frontend`
-3. Set the **Build Command** to: `npm run build`
-4. Set the **Output Directory** to: `build`
-5. Add environment variable:
-   ```
-   REACT_APP_API_URL=https://<your-railway-backend-url>
-   ```
-6. Deploy — Vercel provides a live URL automatically
-
----
-
-## 🔧 Local Development (without Docker)
-
-### Backend
-
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-
-# Set env vars
-export DATABASE_URL="postgresql://postgres:postgres@localhost:5432/inventory_db"
-
-uvicorn app.main:app --reload --port 8000
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-
-# Set env vars
-echo "REACT_APP_API_URL=http://localhost:8000" > .env.local
-
-npm start
-```
-
 ---
 
 ## 📜 PostgreSQL Schema
