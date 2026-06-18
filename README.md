@@ -22,9 +22,9 @@ A production-ready full-stack Inventory & Order Management System built with **R
 | Service      | URL                                                                            |
 | ------------ | ------------------------------------------------------------------------------ |
 | Frontend     | https://inventory-and-order-management-syst-beta.vercel.app                    |
-| Backend API  | https://inventory-and-order-management-system-production.up.railway.app        |
-| API Docs     | https://inventory-and-order-management-system-production.up.railway.app/docs   |
-| Health Check | https://inventory-and-order-management-system-production.up.railway.app/health |
+| Backend API  | https://inventory-and-order-management-system-production-0597.up.railway.app/        |
+| API Docs     | https://inventory-and-order-management-system-production-0597.up.railway.app//docs   |
+| Health Check | https://inventory-and-order-management-system-production-0597.up.railway.app//health |
 | Docker Image | https://hub.docker.com/r/shiveshm46radha/inventory-backend                     |
 
 
